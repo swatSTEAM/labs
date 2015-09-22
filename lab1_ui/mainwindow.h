@@ -16,10 +16,8 @@ class MainWindow : public QMainWindow
 
 public:
     explicit MainWindow(QWidget *parent = 0);
-    binaryTree<bankRecord_ext> *tree;             //Дерево для расширенных рекордов
-    binaryTree<bankRecord> *tree_usual;           //Дерево для стандартных рекордов
+    binaryTree<bankRecord> *tree;                 //Дерево для расширенных рекордов
     bool change = false;                          //Статус кнопки
-    bool ext = true;                              //Использовать расширенный тип рекорда
     void updateTreeCtrl();                        //Обновление контрола дерева
     ~MainWindow();
 
@@ -38,8 +36,13 @@ private slots:
 
     void on_lineEdit_3_textChanged(const QString &arg1);
 
+    void on_checkBox_stateChanged(int arg1);
+
 private:
     Ui::MainWindow *ui;
+
+    void hideExtCtrl();
+    void showExtCtrl();
 };
 
 #endif // MAINWINDOW_H

@@ -8,9 +8,13 @@ void bankRecord_ext::setCurrency(const QString &currency) {
     this->currency = currency;
 }
 
-QString bankRecord_ext::getCountry() {
+QString bankRecord_ext::getCountry() const {
     return country;
 }
-QString bankRecord_ext::getCurrency() {
+QString bankRecord_ext::getCurrency() const {
     return currency;
 }
+
+//bool bankRecord::isExtended() const {
+//    return true;
+//}

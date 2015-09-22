@@ -16,14 +16,11 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     classes/bankrecord.cpp \
     classes/binarytree.cpp \
-    classes/bankrecord_ext.cpp \
-    dialog.cpp
+    classes/bankrecord_ext.cpp
 
 HEADERS  += mainwindow.h \
     classes/bankrecord.h \
     classes/binarytree.h \
-    classes/bankrecord_ext.h \
-    dialog.h
+    classes/bankrecord_ext.h
 
-FORMS    += mainwindow.ui \
-    dialog.ui
+FORMS    += mainwindow.ui

@@ -26,7 +26,7 @@ public:
     bankRecord(const int &ID, const double &sum, const string &sender, const string &receiver, const QDate &date):
             ID(ID), sum(sum), sender(sender), receiver(receiver), date(date) {}
     //Set-методы
-    bankRecord& setSum(double sum);
+    bankRecord& setSum(ulong sum);
     bankRecord* setSender(string sender);
     bankRecord* setReceiver(string receiver);
     bankRecord& setDate(QDate date);
@@ -38,8 +38,14 @@ public:
     string getSender();
     string getReceiver();
 
+    virtual bool isExtended() {
+        return false;
+    }
+
+    virtual QString getCurrency() const;
+    virtual QString getCountry() const;
     virtual string toString(bool toFile);
-    ~bankRecord() {}
+    virtual ~bankRecord() {}
 };
 
 #endif // BANKRECORD_H

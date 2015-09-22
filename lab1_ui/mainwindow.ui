@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Lab1</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout_8">
@@ -95,6 +95,13 @@
              </widget>
             </item>
             <item>
+             <widget class="QLabel" name="label_10">
+              <property name="text">
+               <string>Type:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
              <widget class="QLabel" name="label_7">
               <property name="text">
                <string>Country:</string>
@@ -149,6 +156,13 @@
                 <month>1</month>
                 <day>1</day>
                </date>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="checkBox">
+              <property name="text">
+               <string>Extended</string>
               </property>
              </widget>
             </item>

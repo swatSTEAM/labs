@@ -20,8 +20,11 @@ public:
     void setCountry(const QString &country);
     void setCurrency(const QString &currency);
     //Get-методы
-    QString getCountry();
-    QString getCurrency();
+    virtual QString getCountry() const;
+    virtual QString getCurrency() const;
+    virtual bool isExtended() {
+        return true;
+    }
 };
 
 //QStringList bankRecord_ext::contries = {"USA","Russia","China"};

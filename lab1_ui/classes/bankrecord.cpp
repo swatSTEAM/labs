@@ -7,9 +7,14 @@ using namespace std;
 int bankRecord::id = 0;
 
 /****************** set methods ******************/
-bankRecord& bankRecord::setSum(double sum) {
-    this->sum = sum;
-    return (*this);
+bankRecord& bankRecord::setSum(ulong sum) {
+    if (sum>0) {
+        this->sum = sum;
+        return (*this);
+    } else {
+        throw domain_error("Sum can only be positive");
+    }
+
 }
 
 bankRecord* bankRecord::setSender(string sender) {
@@ -62,4 +67,12 @@ string bankRecord::toString(bool toFile) {
         outfile.close();
     }
     return strStream.str();
+}
+
+QString bankRecord::getCurrency() const {
+    return "";
+}
+
+QString bankRecord::getCountry() const {
+    return "";
 }
