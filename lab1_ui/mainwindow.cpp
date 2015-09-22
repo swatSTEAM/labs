@@ -215,5 +215,5 @@ void MainWindow::on_checkBox_stateChanged(int arg1) {
 
 void MainWindow::on_tableWidget_itemSelectionChanged()
 {
-    on_tableWidget_itemClicked();
+//    on_tableWidget_itemClicked();
 }

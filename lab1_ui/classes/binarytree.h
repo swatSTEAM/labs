@@ -26,7 +26,7 @@ public:
     void insert(Type* record);                                        //Вставление элемента
     Type* findByID(const int ID);                                      //Поиск элемента по ID
     void removeByID(const int ID);                                          //Удаления элемента по ID
-    string toString();                              
+    string toString();
     Type* operator[](const int num);                                   //Получение элемента по n'му итератору
     multiset<Type*,comparator<Type>> getContent();                           //Получение multiset-контейнера
     ~binaryTree();
@@ -55,7 +55,8 @@ void binaryTree<Type>::insert(Type* record) {
 
 template<typename Type>
 void binaryTree<Type>::removeByID(const int ID) {
-    for (auto it=content.begin(); it!=content.end(); ++it) {     //Аналогичено с find, но с итератором
+    typename multiset<Type*,comparator<Type>>::iterator it;
+    for (it=content.begin(); it!=content.end(); ++it) {     //Аналогичено с find, но с итератором
         Type* curr = *it;
         if ((*curr).getID() == ID) {
             content.erase(it);                              //set требует итератор для удаления
