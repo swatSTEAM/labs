@@ -53,12 +53,12 @@
       </column>
       <column>
        <property name="text">
-        <string>Reciever</string>
+        <string>Sender</string>
        </property>
       </column>
       <column>
        <property name="text">
-        <string>Sender</string>
+        <string>Reciever</string>
        </property>
       </column>
      </widget>
