@@ -33,8 +33,8 @@ public:
 };
 template<typename Type>
 binaryTree<Type>::~binaryTree() {
-    for (auto curr:content) {                            //Итерируем по дерево
-            delete curr;                                        //Пока не найдём рекорд с нужным айди
+    for (auto curr:content) {
+            delete curr;
     }
 }
 
@@ -55,8 +55,7 @@ void binaryTree<Type>::insert(Type* record) {
 
 template<typename Type>
 void binaryTree<Type>::removeByID(const int ID) {
-    typename multiset<Type*,comparator<Type>>::iterator it;
-    for (it=content.begin(); it!=content.end(); ++it) {     //Аналогичено с find, но с итератором
+    for (auto it=content.begin(); it!=content.end(); ++it) {     //Аналогичено с find, но с итератором
         Type* curr = *it;
         if ((*curr).getID() == ID) {
             content.erase(it);                              //set требует итератор для удаления

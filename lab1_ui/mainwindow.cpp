@@ -15,7 +15,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow) {
     ui->setupUi(this);
-
+    ui->tableWidget->setColumnWidth(0,40);
 
     ui->dateEdit->setMinimumDate(QDate(1800,1,1));                                          //Устанавливаем ограничение на дату
     ui->dateEdit->setMaximumDate(QDate(2077,1,1));                                          //
@@ -35,10 +35,29 @@ MainWindow::~MainWindow() {                                                     
 }
 
 void MainWindow::updateTreeCtrl() {                                                         //Функция обновление контрола дерева
-    ui->listWidget->clear();                                                                //Отчищаем контрол дерева
-    for (auto curr:tree->getContent()) {                                                    //Отображаем всё дерево заново
-        ui->listWidget->addItem("#" + QString::number((*curr).getID()) + " Sum: " + QString::number((*curr).getSum(), 'f', 0) + (*curr).getCurrency());
+    ui->tableWidget->clearContents();
+    int row = 0;
+    for (auto curr:tree->getContent()) {
+         ui->tableWidget->removeRow(row);
+         ui->tableWidget->insertRow(row);
+
+         QTableWidgetItem* uiRec_id = new QTableWidgetItem;
+         uiRec_id->setText(QString::number((*curr).getID()));
+         ui->tableWidget->setItem(row, 0, uiRec_id);
+
+         QTableWidgetItem* uiRec_sum = new QTableWidgetItem;
+         uiRec_sum->setText(QString::number((*curr).getSum()) + (*curr).getCurrency());
+         ui->tableWidget->setItem(row, 1, uiRec_sum);
+
+         QTableWidgetItem* uiRec_sender = new QTableWidgetItem;
+         uiRec_sender->setText(QString::fromStdString((*curr).getSender()));
+         ui->tableWidget->setItem(row, 2, uiRec_sender);
+
+         QTableWidgetItem* uiRec_receiver = new QTableWidgetItem;
+         uiRec_receiver->setText(QString::fromStdString((*curr).getReceiver()));
+         ui->tableWidget->setItem(row++, 3, uiRec_receiver);
     }
+    ui->tableWidget->setColumnWidth(0,40);
 }
 
 void MainWindow::on_pushButton_clicked() {                                                  //Хендлер на кнопку "Add" ("Change")
@@ -59,7 +78,7 @@ void MainWindow::on_pushButton_clicked() {                                      
         ui->label_9->setText("Invalid data");
     } else {
         if (change) {                                                                       //Изменение записи:
-            int row = ui->listWidget->currentRow();
+            int row = ui->tableWidget->currentRow();
             if (row == -1) return;
                                                                                             //Удаляем текущую запись
             int id = (*(*tree)[row]).getID();
@@ -72,8 +91,8 @@ void MainWindow::on_pushButton_clicked() {                                      
                 bankRecord* record = new bankRecord(id, sum, sender.toStdString(), receiver.toStdString(), date);
                 tree->insert(record);
             }
-            this->updateTreeCtrl();                                                         //Обновляем интерфейс
-            ui->listWidget->setCurrentRow(row);
+            updateTreeCtrl();                                                         //Обновляем интерфейс
+            ui->tableWidget->setCurrentCell(row,0);
             ui->label_9->setText("Record changed");
         } else {                                                                     //Создаём новую
             //HERE
@@ -84,7 +103,7 @@ void MainWindow::on_pushButton_clicked() {                                      
                 bankRecord* record = new bankRecord(sum, sender.toStdString(), receiver.toStdString(), date);
                 tree->insert(record);
             }
-            this->updateTreeCtrl();                                                         //Обновляем UI
+            updateTreeCtrl();                                                         //Обновляем UI
             ui->label_9->setText("Record added");
         }
     }
@@ -104,8 +123,10 @@ void MainWindow::hideExtCtrl() {
     ui->label_8->hide();
 }
 
-void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item) {
-    int row = ui->listWidget->currentRow();
+//Клик по таблице
+void MainWindow::on_tableWidget_itemClicked() {
+    int row = ui->tableWidget->currentRow();
+    ui->tableWidget->setRangeSelected(QTableWidgetSelectionRange(row,0,row,3),true);
     change = true;
     ui->pushButton->setText("Change");
     ui->pushButton_2->show();
@@ -147,12 +168,14 @@ void MainWindow::on_pushButton_2_clicked() {
 
 //Кнопка delete
 void MainWindow::on_pushButton_3_clicked() {
-    on_pushButton_2_clicked();
-    int row = ui->listWidget->currentRow(); //Текущая запись
+    int row = ui->tableWidget->currentRow(); //Текущая запись
     int id = (*(*tree)[row]).getID();
+    qDebug() << id << " " << row;
     tree->removeByID(id);
-    this->updateTreeCtrl();
+    ui->tableWidget->removeRow(row);
+    updateTreeCtrl();
     ui->label_9->setText("Record deleted");
+    on_pushButton_2_clicked();
 }
 
 //Хендлер для проверки на корректность
@@ -187,4 +210,10 @@ void MainWindow::on_checkBox_stateChanged(int arg1) {
     } else {
         hideExtCtrl();
     }
+}
+
+
+void MainWindow::on_tableWidget_itemSelectionChanged()
+{
+    on_tableWidget_itemClicked();
 }

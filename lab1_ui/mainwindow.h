@@ -5,6 +5,7 @@
 #include "classes/bankrecord.h"
 #include "classes/bankrecord_ext.h"
 #include <QMainWindow>
+#include <QTableWidget>
 
 namespace Ui {
 class MainWindow;
@@ -24,7 +25,7 @@ public:
 private slots:
     void on_pushButton_clicked();
 
-    void on_listWidget_itemClicked(QListWidgetItem *item);
+//    void on_listWidget_itemClicked(QListWidgetItem *item);
 
     void on_pushButton_2_clicked();
 
@@ -37,6 +38,10 @@ private slots:
     void on_lineEdit_3_textChanged(const QString &arg1);
 
     void on_checkBox_stateChanged(int arg1);
+
+    void on_tableWidget_itemClicked();
+
+    void on_tableWidget_itemSelectionChanged();
 
 private:
     Ui::MainWindow *ui;
