@@ -80,6 +80,7 @@ QString bankRecord::getCountry() const {
 string bankRecord::toFileString() const {
     ostringstream strStream;
     strStream << 0 << endl;
+
     strStream << sum << endl;
     strStream << sender << endl;
     strStream << receiver << endl;

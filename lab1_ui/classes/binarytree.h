@@ -27,8 +27,9 @@ public:
     Type& findByID(const int ID);                                           //Поиск элемента по ID
     void removeByID(const int ID);                                          //Удаления элемента по ID
     string toString();
+
     Type& operator[](const int num);                                        //Получение элемента по n'му итератору
-    multiset<Type*,comparator<Type>> getContent();                          //Получение multiset-контейнера
+    multiset<Type*,comparator<Type>>& getContent();                          //Получение multiset-контейнера
     ~binaryTree();
 };
 template<typename Type>
@@ -61,9 +62,10 @@ void binaryTree<Type>::removeByID(const int ID) {
         if ((*curr).getID() == ID) {
             content.erase(it);                              //set требует итератор для удаления
             delete curr;
-            break;
+            return;
         }
     }
+    throw invalid_argument("Can't find record with ID: " + to_string(ID));
 }
 
 template<typename Type>
@@ -81,7 +83,7 @@ Type& binaryTree<Type>::operator[](const int num) {
 }
 
 template<typename Type>
-multiset<Type*,comparator<Type>> binaryTree<Type>::getContent() {
+multiset<Type*,comparator<Type>>& binaryTree<Type>::getContent() {
     return content;
 }
 

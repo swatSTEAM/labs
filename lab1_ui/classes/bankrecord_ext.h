@@ -6,14 +6,14 @@ class bankRecord_ext : public bankRecord {
     QString country;
     QString currency;
 public:
-//    static QStringList contries;
-//    static QStringList currencies;
     bankRecord_ext() : bankRecord() {}
     //Стандартный конструктор
-    bankRecord_ext(const ulong &sum, const string &sender, const string &receiver, const QDate &date, const QString &country, const QString &currency) :
+    bankRecord_ext(const ulong &sum, const string &sender, const string &receiver,
+                   const QDate &date, const QString &country, const QString &currency) :
         bankRecord(sum, sender, receiver, date), country(country), currency(currency) {}
     //Конструктор для "изменения"
-    bankRecord_ext(const int &ID, const ulong &sum, const string &sender, const string &receiver, const QDate &date, const QString &country, const QString &currency) :
+    bankRecord_ext(const int &ID, const ulong &sum, const string &sender, const string &receiver,
+                   const QDate &date, const QString &country, const QString &currency) :
         bankRecord(ID, sum, sender, receiver, date), country(country), currency(currency) {}
 
     //Set-методы
@@ -22,6 +22,7 @@ public:
     //Get-методы
     virtual QString getCountry() const;
     virtual QString getCurrency() const;
+
     virtual string toString(const bool toFile) const;
     virtual string toFileString() const;
     virtual bool isExtended() const {

@@ -53,7 +53,7 @@ void MainWindow::updateTreeCtrl() {                                             
          ui->tableWidget->setItem(row, 0, uiRec_id);
 
          QTableWidgetItem* uiRec_sum = new QTableWidgetItem;
-         uiRec_sum->setText(QString::number((*curr).getSum()) + (*curr).getCurrency());
+         uiRec_sum->setText(QString::number((*curr).getSum(), 'f', 0) + (*curr).getCurrency());
          ui->tableWidget->setItem(row, 1, uiRec_sum);
 
          QTableWidgetItem* uiRec_sender = new QTableWidgetItem;
@@ -244,6 +244,7 @@ void MainWindow::on_pushButton_4_clicked()
 //Чтение из файла
 void MainWindow::on_pushButton_5_clicked()
 {
+    tree->getContent().clear();
     QString filename = "../lab1_ui/tree_out.txt";
     QFile out(filename);
     if (out.open(QIODevice::ReadWrite)) {
