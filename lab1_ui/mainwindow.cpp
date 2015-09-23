@@ -276,7 +276,6 @@ void MainWindow::on_pushButton_5_clicked()
                         break;
                     case (Lines::dateL):
                         QStringList fields = line.split(".");
-                        qDebug() << fields;
                         date = QDate(fields[2].toInt(),fields[1].toInt(),fields[0].toInt());
                         break;
                 }
@@ -285,8 +284,6 @@ void MainWindow::on_pushButton_5_clicked()
             if (isExt) {
                 QString country = out.readLine().trimmed();
                 QString currency = out.readLine().trimmed();
-                qDebug() << country;
-                qDebug() << currency;
                 bankRecord* record = new bankRecord_ext(sum, sender, receiver, date, country, currency);
                 tree->insert(record);
                 updateTreeCtrl();
