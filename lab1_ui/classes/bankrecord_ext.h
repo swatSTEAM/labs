@@ -22,13 +22,11 @@ public:
     //Get-методы
     virtual QString getCountry() const;
     virtual QString getCurrency() const;
-    virtual string toString(bool toFile);
-    virtual bool isExtended() {
+    virtual string toString(const bool toFile) const;
+    virtual string toFileString() const;
+    virtual bool isExtended() const {
         return true;
     }
 };
-
-//QStringList bankRecord_ext::contries = {"USA","Russia","China"};
-//QStringList bankRecord_ext::currencies = {"$","rub","¥"};
 
 #endif // BANKRECORD_EXT_H

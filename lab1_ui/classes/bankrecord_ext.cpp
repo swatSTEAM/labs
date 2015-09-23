@@ -16,23 +16,31 @@ QString bankRecord_ext::getCurrency() const {
     return currency;
 }
 
-string bankRecord_ext::toString(bool toFile) {
+string bankRecord_ext::toString(const bool toFile) const {
     ostringstream strStream;
     strStream << "Record ID:  " << ID << endl;
     strStream << "  Summ:     " << sum << endl;
     strStream << "  Sender:   " << sender << endl;
     strStream << "  Receiver: " << receiver << endl;
-    strStream << "  DATE:     " << date.toString().toStdString() << endl;
+    strStream << "  DATE:     " << date.day() << "." << date.month() << "." << date.year() << endl;
     strStream << "  Country:  " << country.toStdString() << endl;
-    strStream << "  Currency:  "<< currency.toStdString() << endl;
+    strStream << "  Currency: " << currency.toStdString() << endl;
     if (toFile) {
-        ofstream outfile_ext("bankRecord_ext" + to_string(ID) + ".txt");
+        ofstream outfile_ext("../lab1_ui/bankRecord_ext" + to_string(ID) + ".txt");
         outfile_ext << strStream.str();
         outfile_ext.close();
     }
     return strStream.str();
 }
 
-//bool bankRecord::isExtended() const {
-//    return true;
-//}
+string bankRecord_ext::toFileString() const {
+    ostringstream strStream;
+    strStream << 1 << endl;
+    strStream << sum << endl;
+    strStream << sender << endl;
+    strStream << receiver << endl;
+    strStream << date.day() << "." << date.month() << "." << date.year() << endl;
+    strStream << country.toStdString() << endl;
+    strStream << currency.toStdString() << endl;
+    return strStream.str();
+}

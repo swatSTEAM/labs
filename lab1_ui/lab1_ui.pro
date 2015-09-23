@@ -24,3 +24,5 @@ HEADERS  += mainwindow.h \
     classes/bankrecord_ext.h
 
 FORMS    += mainwindow.ui
+
+RESOURCES +=

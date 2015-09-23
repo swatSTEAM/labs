@@ -10,6 +10,11 @@
 #include <QDate>
 #include <QSignalMapper>
 #include <QMessageBox>
+#include <QFile>
+#include <QFileInfo>
+#include <QCoreApplication>
+#include <QTextStream>
+#include <QHeaderView>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -28,6 +33,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->comboBox_2->hide();
     ui->label_7->hide();
     ui->label_8->hide();
+    QHeaderView *header = ui->tableWidget->horizontalHeader();
+    header->setSectionResizeMode(QHeaderView::Stretch);
 }
 
 MainWindow::~MainWindow() {                                                                 //Деструктор интерфейса
@@ -170,7 +177,6 @@ void MainWindow::on_pushButton_2_clicked() {
 void MainWindow::on_pushButton_3_clicked() {
     int row = ui->tableWidget->currentRow(); //Текущая запись
     int id = (*(*tree)[row]).getID();
-    qDebug() << id << " " << row;
     tree->removeByID(id);
     ui->tableWidget->removeRow(row);
     updateTreeCtrl();
@@ -216,4 +222,83 @@ void MainWindow::on_checkBox_stateChanged(int arg1) {
 void MainWindow::on_tableWidget_itemSelectionChanged()
 {
 //    on_tableWidget_itemClicked();
+}
+
+//Запись в файл
+void MainWindow::on_pushButton_4_clicked()
+{
+    QString filename = "../lab1_ui/tree_out.txt";
+    QFile out(filename);
+    if (out.open(QIODevice::ReadWrite)) {
+        QTextStream stream(&out);
+        for (auto curr:tree->getContent()) {
+            stream << QString::fromStdString(curr->toFileString());
+        }
+        out.resize(out.pos());
+        QMessageBox::information(this, "File saved", "Tree saved to file " + QFileInfo(out).absoluteFilePath());
+    } else {
+        qDebug() << "Error";
+    }
+}
+
+//Чтение из файла
+void MainWindow::on_pushButton_5_clicked()
+{
+    QString filename = "../lab1_ui/tree_out.txt";
+    QFile out(filename);
+    if (out.open(QIODevice::ReadWrite)) {
+        bool isExt = false;
+        ulong sum;
+        string sender;
+        string receiver;
+        QDate date;
+        QTextStream stream(&out);
+        enum Lines {
+            extL, sumL, senderL, recieverL, dateL
+        };
+
+        while(!stream.atEnd()) {
+            for (int i=0;i<=4;i++) {
+                QString line = out.readLine().trimmed();
+                switch (i) {
+                    case (Lines::extL):
+                        if (line == "1")
+                            isExt = true;
+                        break;
+                    case (Lines::sumL):
+                        sum = line.toULong();
+                        break;
+                    case (Lines::senderL):
+                        sender = line.toStdString();
+                        break;
+                    case (Lines::recieverL):
+                        receiver = line.toStdString();
+                        break;
+                    case (Lines::dateL):
+                        QStringList fields = line.split(".");
+                        qDebug() << fields;
+                        date = QDate(fields[2].toInt(),fields[1].toInt(),fields[0].toInt());
+                        break;
+                }
+            }
+
+            if (isExt) {
+                QString country = out.readLine();
+                QString currency = out.readLine();
+                qDebug() << country;
+                qDebug() << currency;
+                bankRecord* record = new bankRecord_ext(sum, sender, receiver, date, country, currency);
+                tree->insert(record);
+                updateTreeCtrl();
+            } else {
+                bankRecord* record = new bankRecord(sum, sender, receiver, date);
+                tree->insert(record);
+                updateTreeCtrl();
+            }
+            isExt = false;
+        }
+        QMessageBox::information(this, "File was load", "New records was load from file " + QFileInfo(out).absoluteFilePath());
+    } else {
+        qDebug() << "Error";
+    }
 }
