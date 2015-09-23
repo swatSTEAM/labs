@@ -88,7 +88,7 @@ void MainWindow::on_pushButton_clicked() {                                      
             int row = ui->tableWidget->currentRow();
             if (row == -1) return;
                                                                                             //Удаляем текущую запись
-            int id = (*(*tree)[row]).getID();
+            int id = (*tree)[row].getID();
             tree->removeByID(id);
             //HERE
             if (ui->checkBox->isChecked()) {
@@ -142,15 +142,15 @@ void MainWindow::on_tableWidget_itemClicked() {
     ui->lineEdit_4->show();
     ui->label_9->setText("Record selected");
     //HERE
-    bankRecord* currRec = (*tree)[row];
-    ui->lineEdit_4->setText(QString::number((*currRec).getID()));
-    ui->lineEdit->setText(QString::number((*currRec).getSum(), 'f', 0));
-    ui->lineEdit_2->setText(QString::fromStdString((*currRec).getSender()));
-    ui->lineEdit_3->setText(QString::fromStdString((*currRec).getReceiver()));
-    ui->dateEdit->setDate((*currRec).getDate());
-    if ((*currRec).isExtended()) {
-        ui->comboBox->setCurrentText((*currRec).getCountry());
-        ui->comboBox_2->setCurrentText((*currRec).getCurrency());
+    bankRecord& currRec = (*tree)[row];
+    ui->lineEdit_4->setText(QString::number((currRec).getID()));
+    ui->lineEdit->setText(QString::number((currRec).getSum(), 'f', 0));
+    ui->lineEdit_2->setText(QString::fromStdString((currRec).getSender()));
+    ui->lineEdit_3->setText(QString::fromStdString((currRec).getReceiver()));
+    ui->dateEdit->setDate((currRec).getDate());
+    if ((currRec).isExtended()) {
+        ui->comboBox->setCurrentText((currRec).getCountry());
+        ui->comboBox_2->setCurrentText((currRec).getCurrency());
         ui->checkBox->setChecked(true);
         showExtCtrl();
     } else {
@@ -176,7 +176,7 @@ void MainWindow::on_pushButton_2_clicked() {
 //Кнопка delete
 void MainWindow::on_pushButton_3_clicked() {
     int row = ui->tableWidget->currentRow(); //Текущая запись
-    int id = (*(*tree)[row]).getID();
+    int id = (*tree)[row].getID();
     tree->removeByID(id);
     ui->tableWidget->removeRow(row);
     updateTreeCtrl();
@@ -283,8 +283,8 @@ void MainWindow::on_pushButton_5_clicked()
             }
 
             if (isExt) {
-                QString country = out.readLine();
-                QString currency = out.readLine();
+                QString country = out.readLine().trimmed();
+                QString currency = out.readLine().trimmed();
                 qDebug() << country;
                 qDebug() << currency;
                 bankRecord* record = new bankRecord_ext(sum, sender, receiver, date, country, currency);
