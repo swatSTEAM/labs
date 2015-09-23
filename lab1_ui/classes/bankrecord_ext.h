@@ -22,6 +22,7 @@ public:
     //Get-методы
     virtual QString getCountry() const;
     virtual QString getCurrency() const;
+    virtual string toString(bool toFile);
     virtual bool isExtended() {
         return true;
     }

@@ -12,7 +12,7 @@ bankRecord& bankRecord::setSum(ulong sum) {
         this->sum = sum;
         return (*this);
     } else {
-        throw domain_error("Sum can only be positive");
+//        throw domain_error("Sum can only be positive");
     }
 
 }

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>379</width>
-    <height>784</height>
+    <width>422</width>
+    <height>786</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -216,6 +216,20 @@
       </item>
      </layout>
     </item>
+    <item>
+     <widget class="QPushButton" name="pushButton_4">
+      <property name="text">
+       <string>Save to file</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="pushButton_5">
+      <property name="text">
+       <string>Load from file</string>
+      </property>
+     </widget>
+    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -223,7 +237,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>379</width>
+     <width>422</width>
      <height>25</height>
     </rect>
    </property>
