@@ -12,7 +12,7 @@ bankRecord& bankRecord::setSum(const ulong sum) {
         this->sum = sum;
         return (*this);
     } else {
-        throw domain_error("Sum can only be positive");
+//        throw domain_error("Sum can only be positive");
     }
 
 }
@@ -54,18 +54,18 @@ QDate bankRecord::getDate() const {
     return this->date;
 }
 
-string bankRecord::toString(const bool toFile) const {
+string bankRecord::toString() const {
     ostringstream strStream;
     strStream << "Record ID:  " << ID << endl;
     strStream << "  Summ:     " << sum << endl;
     strStream << "  Sender:   " << sender << endl;
     strStream << "  Receiver: " << receiver << endl;
     strStream << "  DATE:     " << date.day() << "." << date.month() << "." << date.year() << endl;
-    if (toFile) {
-        ofstream outfile("../lab1_ui/bankRecord" + to_string(ID) + ".txt");
-        outfile << strStream.str();
-        outfile.close();
-    }
+//    if (toFile) {
+//        ofstream outfile("../lab1_ui/bankRecord" + to_string(ID) + ".txt");
+//        outfile << strStream.str();
+//        outfile.close();
+//    }
     return strStream.str();
 }
 

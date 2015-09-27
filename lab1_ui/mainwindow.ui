@@ -229,7 +229,7 @@
     <item>
      <widget class="QPushButton" name="pushButton_5">
       <property name="text">
-       <string>Add from file</string>
+       <string>Load from file</string>
       </property>
      </widget>
     </item>

@@ -16,7 +16,7 @@ QString bankRecord_ext::getCurrency() const {
     return currency;
 }
 
-string bankRecord_ext::toString(const bool toFile) const {
+string bankRecord_ext::toString() const {
     ostringstream strStream;
     strStream << "Record ID:  " << ID << endl;
     strStream << "  Summ:     " << sum << endl;
@@ -25,11 +25,11 @@ string bankRecord_ext::toString(const bool toFile) const {
     strStream << "  DATE:     " << date.day() << "." << date.month() << "." << date.year() << endl;
     strStream << "  Country:  " << country.toStdString() << endl;
     strStream << "  Currency: " << currency.toStdString() << endl;
-    if (toFile) {
-        ofstream outfile_ext("../lab1_ui/bankRecord_ext" + to_string(ID) + ".txt");
-        outfile_ext << strStream.str();
-        outfile_ext.close();
-    }
+//    if (toFile) {
+//        ofstream outfile_ext("../lab1_ui/bankRecord_ext" + to_string(ID) + ".txt");
+//        outfile_ext << strStream.str();
+//        outfile_ext.close();
+//    }
     return strStream.str();
 }
 

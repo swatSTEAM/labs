@@ -72,7 +72,7 @@ template<typename Type>
 string binaryTree<Type>::toString() {
     ostringstream strStream;
     for (auto curr:content) {
-        strStream << (*curr).toString(false) << endl;               //Собираем все объекты-члены в строку
+        strStream << (*curr).toString() << endl;               //Собираем все объекты-члены в строку
     }
     return strStream.str();
 }

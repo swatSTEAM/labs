@@ -23,7 +23,7 @@ public:
     virtual QString getCountry() const;
     virtual QString getCurrency() const;
 
-    virtual string toString(const bool toFile) const;
+    virtual string toString() const;
     virtual string toFileString() const;
     virtual bool isExtended() const {
         return true;
