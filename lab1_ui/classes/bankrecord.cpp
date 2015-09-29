@@ -12,7 +12,7 @@ bankRecord& bankRecord::setSum(const ulong sum) {
         this->sum = sum;
         return (*this);
     } else {
-//        throw domain_error("Sum can only be positive");
+//        throw std::domain_error("Sum can only be positive");
     }
 
 }

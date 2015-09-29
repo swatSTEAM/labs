@@ -199,18 +199,18 @@ void MainWindow::on_lineEdit_textChanged(const QString &arg1) {
 }
 
 //Поля вводе reciever
-void MainWindow::on_lineEdit_2_textChanged(const QString &arg1) {
+void MainWindow::on_lineEdit_2_textChanged() {
     ui->lineEdit_2->setStyleSheet("");
     ui->label_9->setText("All fine");
 }
 
-void MainWindow::on_lineEdit_3_textChanged(const QString &arg1) {
+void MainWindow::on_lineEdit_3_textChanged() {
     ui->lineEdit_3->setStyleSheet("");
     ui->label_9->setText("All fine");
 }
 
 
-void MainWindow::on_checkBox_stateChanged(int arg1) {
+void MainWindow::on_checkBox_stateChanged() {
     if (ui->checkBox->isChecked()) {
         showExtCtrl();
     } else {

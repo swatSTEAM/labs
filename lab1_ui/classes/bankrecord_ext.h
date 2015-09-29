@@ -6,7 +6,7 @@ class bankRecord_ext : public bankRecord {
     QString country;
     QString currency;
 public:
-    bankRecord_ext() : bankRecord() {}
+    bankRecord_ext() = delete;
     //Стандартный конструктор
     bankRecord_ext(const ulong &sum, const string &sender, const string &receiver,
                    const QDate &date, const QString &country, const QString &currency) :

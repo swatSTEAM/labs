@@ -20,18 +20,21 @@ struct comparator {                                                         //О
 template<typename Type>
 class binaryTree {
     multiset<Type*,comparator<Type>> content;                               //multiset контейнер-дерево.
+    mutable uint count_u = 0;
+    mutable uint count_e = 0;
 public:
     binaryTree() {}
     binaryTree(const binaryTree&);
     void insert(Type* record);                                              //Вставление элемента
-    Type& findByID(const int ID);                                           //Поиск элемента по ID
+    Type& findByID(const int ID) const;                                     //Поиск элемента по ID
     void removeByID(const int ID);                                          //Удаления элемента по ID
-    string toString();
-
-    Type& operator[](const int num);                                        //Получение элемента по n'му итератору
-    multiset<Type*,comparator<Type>>& getContent();                          //Получение multiset-контейнера
+    string toString() const;
+    Type& operator[](const int num) const;                                  //Получение элемента по n'му итератору
+    ulong operator()(const int num) const;
+    multiset<Type*,comparator<Type>>& getContent();                         //Получение multiset-контейнера
     ~binaryTree();
 };
+
 template<typename Type>
 binaryTree<Type>::~binaryTree() {
     for (auto curr:content) {
@@ -41,7 +44,7 @@ binaryTree<Type>::~binaryTree() {
 
 //Methods
 template<typename Type>
-Type& binaryTree<Type>::findByID(const int ID) {
+Type& binaryTree<Type>::findByID(const int ID) const {
     for (auto curr:content) {
         if ((*curr).getID() == ID)                             //Итерируем по дерево
             return curr;                                       //Пока не найдём рекорд с нужным айди
@@ -51,6 +54,7 @@ Type& binaryTree<Type>::findByID(const int ID) {
 
 template<typename Type>
 void binaryTree<Type>::insert(Type* record) {
+    record->isExtended() ? count_e+=1: count_u+=1;
     this->content.insert(record);
 }
 
@@ -69,7 +73,7 @@ void binaryTree<Type>::removeByID(const int ID) {
 }
 
 template<typename Type>
-string binaryTree<Type>::toString() {
+string binaryTree<Type>::toString() const {
     ostringstream strStream;
     for (auto curr:content) {
         strStream << (*curr).toString() << endl;               //Собираем все объекты-члены в строку
@@ -78,8 +82,13 @@ string binaryTree<Type>::toString() {
 }
 
 template<typename Type>
-Type& binaryTree<Type>::operator[](const int num) {
+Type& binaryTree<Type>::operator[](const int num) const {
     return **(std::next(content.begin(),num));               //Возвращаем значение итератора, находящемся на num месте от начала.
+}
+
+template<typename Type>
+ulong binaryTree<Type>::operator()(const int num) const {
+    return (*(std::next(content.begin(),num)))->getSum();
 }
 
 template<typename Type>
@@ -87,5 +96,5 @@ multiset<Type*,comparator<Type>>& binaryTree<Type>::getContent() {
     return content;
 }
 
-
+typedef binaryTree<bankRecord> treeRecs;
 #endif // BINARYTREE_H

@@ -20,7 +20,7 @@ protected:
     string receiver;
     QDate date;
 public:
-    bankRecord() {}
+    bankRecord() = delete;
     //Стандартный конструктор
     bankRecord(const ulong &sum, const string &sender, const string &receiver, const QDate &date):
             sum(sum), sender(sender), receiver(receiver), date(date) {this->ID=++this->id;}
@@ -41,27 +41,53 @@ public:
     string getSender() const;
     string getReceiver() const;
 
-    virtual bool isExtended() const {
-        return false;
-    }
     //Арифметические операторы
-
-    inline bankRecord operator+=(const ulong rhs)
-    {
-      sum+=rhs;
+    inline bankRecord operator+=(const ulong rhs) {
+        sum+=rhs;
+        return *this;
+    }
+    inline bankRecord operator+=(const bankRecord& rhs) {
+        sum+=rhs.getSum();
+        return *this;
+    }
+    inline bankRecord& operator-=(const ulong rhs) {
+      sum-=rhs;
       return *this;
     }
-
-    inline bankRecord operator+=(const bankRecord& rhs)
-    {
-      sum+=rhs.getSum();
+    inline bankRecord& operator-=(const bankRecord& rhs) {
+      sum-=rhs.getSum();
       return *this;
     }
+    inline bankRecord operator+(const bankRecord& rhs) const {
+        bankRecord tmp(*this);
+        tmp.sum += rhs.getSum();
+        return (tmp);
+    }
+    inline ulong operator-(const bankRecord& rhs) {
+      return ((this->getSum())-rhs.getSum());
+    }
 
-    inline ulong operator+(const bankRecord& rhs)
+    inline bankRecord& operator++()
     {
-
-      return ((this->getSum())+rhs.getSum());
+        ++(this->sum);
+        return *this;
+    }
+    inline bankRecord operator++(int)
+    {
+        bankRecord tmp(*this);
+        operator++();
+        return tmp;
+    }
+    inline bankRecord& operator--()
+    {
+        --(this->sum);
+        return *this;
+    }
+    inline bankRecord operator--(int)
+    {
+        bankRecord tmp(*this);
+        operator--();
+        return tmp;
     }
 
     //Операторы сравнения
@@ -73,39 +99,63 @@ public:
                 lhs.getCurrency()==rhs.getCurrency()&&
                 lhs.getCountry()==rhs.getCountry());
     }
+    friend inline bool operator< (const bankRecord& lhs, const bankRecord& rhs) {
+        return (lhs.getSum()<rhs.getSum());
+    }
+    friend inline bool operator!=(const bankRecord& lhs, const bankRecord& rhs) {
+        return !operator==(lhs,rhs);
+    }
+    friend inline bool operator> (const bankRecord& lhs, const bankRecord& rhs) {
+        return  operator< (rhs,lhs);
+    }
+    friend inline bool operator<=(const bankRecord& lhs, const bankRecord& rhs) {
+        return !operator> (lhs,rhs);
+    }
+    friend inline bool operator>=(const bankRecord& lhs, const bankRecord& rhs) {
+        return !operator< (lhs,rhs);
+    }
 
-    friend inline bool operator< (const bankRecord& lhs, const bankRecord& rhs){return (lhs.getSum()<rhs.getSum());}
-    friend inline bool operator!=(const bankRecord& lhs, const bankRecord& rhs){return !operator==(lhs,rhs);}
-    friend inline bool operator> (const bankRecord& lhs, const bankRecord& rhs){return  operator< (rhs,lhs);}
-    friend inline bool operator<=(const bankRecord& lhs, const bankRecord& rhs){return !operator> (lhs,rhs);}
-    friend inline bool operator>=(const bankRecord& lhs, const bankRecord& rhs){return !operator< (lhs,rhs);}
+    //Логические операторы
+    friend inline bool operator&&(const bankRecord& lhs, const bankRecord& rhs) {
+        return (lhs.getCurrency()==rhs.getCurrency());
+    }
 
+    friend inline bool operator||(const bankRecord& lhs, const bankRecord& rhs) {
+        return (lhs.getCurrency()!=""||rhs.getCurrency()!="");
+    }
+    //Присваивания
+    inline bankRecord& operator=(bankRecord rhs)
+    {
+        bankRecord temp(rhs);
+        swap(*this, temp);
+        return *this;
+    }
+    //Операторы приведения типа
+    inline operator int() {
+        return this->getSum();
+    }
 
+    //Операторы вывода
+    friend std::ostream& operator<<(std::ostream& os, const bankRecord& obj)
+    {
+        os << obj.toString();
+        return os;
+    }
+
+    //Виртуальные методы
     virtual QString getCurrency() const;
     virtual QString getCountry() const;
     virtual string toString() const;
     virtual string toFileString() const;
     virtual ~bankRecord() {}
-
-
-   //Операторы вывода
-//    friend QDebug& operator<<(QDebug& os, const bankRecord& obj)
-//    {
-//      // write obj to stream
-//      os << obj.toString();
-//      return os;
-//    }
-
-    /*std::istream& operator>>(std::istream& is, bankRecord& obj)
-    {
-      // read obj from stream
-
-      if(  no valid object of T found in stream  )
-        is.setstate(std::ios::failbit);
-
-      return is;
+    virtual bool isExtended() const {
+        return false;
     }
-    */
 };
+
+template<typename T1, typename T2>
+ulong getRecordsSum(T1& lhs, T2& rhs) {
+    return lhs.getSum()+rhs.getSum();
+}
 
 #endif // BANKRECORD_H
