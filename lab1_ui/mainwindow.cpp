@@ -33,8 +33,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->comboBox_2->hide();
     ui->label_7->hide();
     ui->label_8->hide();
-    QHeaderView *header = ui->tableWidget->horizontalHeader();
-    header->setSectionResizeMode(QHeaderView::Stretch);
+    ui->tableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 }
 
 MainWindow::~MainWindow() {                                                                 //Деструктор интерфейса

@@ -87,3 +87,74 @@ string bankRecord::toFileString() const {
     strStream << date.day() << "." << date.month() << "." << date.year() << endl;
     return strStream.str();
 }
+
+bankRecord& bankRecord::operator+=(const ulong rhs) {
+    sum+=rhs;
+    return *this;
+}
+bankRecord& bankRecord::operator+=(const bankRecord& rhs) {
+    sum+=rhs.getSum();
+    return *this;
+}
+bankRecord& bankRecord::operator-=(const ulong rhs) {
+  sum-=rhs;
+  return *this;
+}
+bankRecord& bankRecord::operator-=(const bankRecord& rhs) {
+  sum-=rhs.getSum();
+  return *this;
+}
+bankRecord bankRecord::operator+(const bankRecord& rhs) const {
+    bankRecord tmp(*this);
+    tmp.sum += rhs.getSum();
+    return (tmp);
+}
+bankRecord bankRecord::operator-(const bankRecord& rhs) const {
+    bankRecord tmp(*this);
+    tmp.sum -= rhs.getSum();
+    return (tmp);
+}
+
+bankRecord& bankRecord::operator++()
+{
+    ++(this->sum);
+    return *this;
+}
+bankRecord bankRecord::operator++(int)
+{
+    bankRecord tmp(*this);
+    operator++();
+    return tmp;
+}
+bankRecord& bankRecord::operator--()
+{
+    --(this->sum);
+    return *this;
+}
+bankRecord bankRecord::operator--(int)
+{
+    bankRecord tmp(*this);
+    operator--();
+    return tmp;
+}
+
+
+//Логические операторы
+bool bankRecord::operator&&(const bankRecord& rhs) {
+    return (this->getCurrency()==rhs.getCurrency());
+}
+
+bool bankRecord::operator||(const bankRecord& rhs) {
+    return (this->getCurrency()!=""||rhs.getCurrency()!="");
+}
+//Присваивания
+bankRecord& bankRecord::operator=(bankRecord rhs)
+{
+    bankRecord temp(rhs);
+    swap(*this, temp);
+    return *this;
+}
+//Операторы приведения типа
+bankRecord::operator int() {
+    return this->getSum();
+}

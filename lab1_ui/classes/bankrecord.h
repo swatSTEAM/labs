@@ -42,54 +42,19 @@ public:
     string getReceiver() const;
 
     //Арифметические операторы
-    inline bankRecord operator+=(const ulong rhs) {
-        sum+=rhs;
-        return *this;
-    }
-    inline bankRecord operator+=(const bankRecord& rhs) {
-        sum+=rhs.getSum();
-        return *this;
-    }
-    inline bankRecord& operator-=(const ulong rhs) {
-      sum-=rhs;
-      return *this;
-    }
-    inline bankRecord& operator-=(const bankRecord& rhs) {
-      sum-=rhs.getSum();
-      return *this;
-    }
-    inline bankRecord operator+(const bankRecord& rhs) const {
-        bankRecord tmp(*this);
-        tmp.sum += rhs.getSum();
-        return (tmp);
-    }
-    inline ulong operator-(const bankRecord& rhs) {
-      return ((this->getSum())-rhs.getSum());
-    }
+    inline bankRecord& operator+=(const ulong rhs);
+    inline bankRecord& operator+=(const bankRecord& rhs);
+    inline bankRecord& operator-=(const ulong rhs);
+    inline bankRecord& operator-=(const bankRecord& rhs);
+    inline bankRecord operator+(const bankRecord& rhs) const;
+    inline bankRecord operator-(const bankRecord& rhs) const;
 
-    inline bankRecord& operator++()
-    {
-        ++(this->sum);
-        return *this;
-    }
-    inline bankRecord operator++(int)
-    {
-        bankRecord tmp(*this);
-        operator++();
-        return tmp;
-    }
-    inline bankRecord& operator--()
-    {
-        --(this->sum);
-        return *this;
-    }
-    inline bankRecord operator--(int)
-    {
-        bankRecord tmp(*this);
-        operator--();
-        return tmp;
-    }
+    inline bankRecord& operator++();
+    inline bankRecord operator++(int);
+    inline bankRecord& operator--();
+    inline bankRecord operator--(int);
 
+    //Операторы сравнения
     //Операторы сравнения
     friend inline bool operator==(const bankRecord& lhs, const bankRecord& rhs) {
         return (lhs.getSum()==rhs.getSum()&&
@@ -115,25 +80,15 @@ public:
         return !operator< (lhs,rhs);
     }
 
-    //Логические операторы
-    friend inline bool operator&&(const bankRecord& lhs, const bankRecord& rhs) {
-        return (lhs.getCurrency()==rhs.getCurrency());
-    }
 
-    friend inline bool operator||(const bankRecord& lhs, const bankRecord& rhs) {
-        return (lhs.getCurrency()!=""||rhs.getCurrency()!="");
-    }
+    //Логические операторы
+    inline bool operator&&(const bankRecord& rhs);
+
+    inline bool operator||(const bankRecord& rhs);
     //Присваивания
-    inline bankRecord& operator=(bankRecord rhs)
-    {
-        bankRecord temp(rhs);
-        swap(*this, temp);
-        return *this;
-    }
+    inline bankRecord& operator=(bankRecord rhs);
     //Операторы приведения типа
-    inline operator int() {
-        return this->getSum();
-    }
+    inline operator int();
 
     //Операторы вывода
     friend std::ostream& operator<<(std::ostream& os, const bankRecord& obj)

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>422</width>
-    <height>786</height>
+    <width>436</width>
+    <height>776</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -41,6 +41,12 @@
       <property name="alternatingRowColors">
        <bool>true</bool>
       </property>
+      <attribute name="horizontalHeaderCascadingSectionResizes">
+       <bool>false</bool>
+      </attribute>
+      <attribute name="verticalHeaderCascadingSectionResizes">
+       <bool>false</bool>
+      </attribute>
       <column>
        <property name="text">
         <string>ID</string>
@@ -240,7 +246,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>422</width>
+     <width>436</width>
      <height>25</height>
     </rect>
    </property>

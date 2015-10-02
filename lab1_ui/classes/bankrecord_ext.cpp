@@ -44,3 +44,5 @@ string bankRecord_ext::toFileString() const {
     strStream << currency.toStdString() << endl;
     return strStream.str();
 }
+
+
