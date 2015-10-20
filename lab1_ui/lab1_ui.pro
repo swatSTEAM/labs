@@ -16,13 +16,15 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     classes/bankrecord.cpp \
     classes/binarytree.cpp \
-    classes/bankrecord_ext.cpp
+    classes/bankrecord_ext.cpp \
+    worker.cpp \
+    consumer.cpp
 
 HEADERS  += mainwindow.h \
     classes/bankrecord.h \
     classes/binarytree.h \
-    classes/bankrecord_ext.h
+    classes/bankrecord_ext.h \
+    worker.h \
+    consumer.h
 
 FORMS    += mainwindow.ui
-
-RESOURCES +=

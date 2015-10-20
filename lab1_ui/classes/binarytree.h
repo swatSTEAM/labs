@@ -7,6 +7,7 @@
 #include <set>
 #include "bankrecord.h"
 #include <QListWidget>
+#include <QMutex>
 
 using namespace std;
 
@@ -32,6 +33,10 @@ public:
     Type& operator[](const int num) const;                                  //Получение элемента по n'му итератору
     ulong operator()(const int num) const;
     multiset<Type*,comparator<Type>>& getContent();                         //Получение multiset-контейнера
+    bool pop();
+    QMutex dataMutex;
+    bool Work = false;
+    bool Consume = true;
     ~binaryTree();
 };
 
@@ -51,6 +56,19 @@ Type& binaryTree<Type>::findByID(const int ID) const {
     }
     throw invalid_argument("Can't find record with ID: " + to_string(ID));
 }
+
+template<typename Type>
+bool binaryTree<Type>::pop() {
+    if (content.size()==0) {
+        return false;
+    } else {
+        auto curr = *content.begin();
+        content.erase(content.begin());
+        delete curr;
+        return true;
+    }
+}
+
 
 template<typename Type>
 void binaryTree<Type>::insert(Type* record) {

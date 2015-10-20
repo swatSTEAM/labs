@@ -3,6 +3,8 @@
 #include "classes/bankrecord.h"
 #include "classes/binarytree.h"
 #include "classes/bankrecord_ext.h"
+#include "worker.h"
+#include "consumer.h"
 #include <iostream>
 #include <string.h>
 #include <QString>
@@ -15,6 +17,8 @@
 #include <QCoreApplication>
 #include <QTextStream>
 #include <QHeaderView>
+#include <QThread>
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -43,6 +47,7 @@ MainWindow::~MainWindow() {                                                     
 void MainWindow::updateTreeCtrl() {                                                         //Функция обновление контрола дерева
     ui->tableWidget->clearContents();
     int row = 0;
+    ui->tableWidget->removeRow(0);
     for (auto curr:tree->getContent()) {
          ui->tableWidget->removeRow(row);
          ui->tableWidget->insertRow(row);
@@ -81,7 +86,6 @@ void MainWindow::on_pushButton_clicked() {                                      
         if (sender == "")
             ui->lineEdit_3->setStyleSheet("color: #b94a48;\
                                            background-color: #f2dede;");
-        ui->label_9->setText("Invalid data");
     } else {
         if (change) {                                                                       //Изменение записи:
             int row = ui->tableWidget->currentRow();
@@ -99,7 +103,6 @@ void MainWindow::on_pushButton_clicked() {                                      
             }
             updateTreeCtrl();                                                         //Обновляем интерфейс
             ui->tableWidget->setCurrentCell(row,0);
-            ui->label_9->setText("Record changed");
         } else {                                                                     //Создаём новую
             //HERE
             if (ui->checkBox->isChecked()) {
@@ -110,7 +113,6 @@ void MainWindow::on_pushButton_clicked() {                                      
                 tree->insert(record);
             }
             updateTreeCtrl();                                                         //Обновляем UI
-            ui->label_9->setText("Record added");
         }
     }
 }
@@ -139,7 +141,6 @@ void MainWindow::on_tableWidget_itemClicked() {
     ui->pushButton_3->show();
     ui->label_6->show();
     ui->lineEdit_4->show();
-    ui->label_9->setText("Record selected");
     //HERE
     bankRecord& currRec = (*tree)[row];
     ui->lineEdit_4->setText(QString::number((currRec).getID()));
@@ -169,7 +170,6 @@ void MainWindow::on_pushButton_2_clicked() {
     ui->lineEdit_3->setText("");
     ui->pushButton_2->hide();
     ui->pushButton_3->hide();
-    ui->label_9->setText("Enter new record");
 }
 
 //Кнопка delete
@@ -179,7 +179,6 @@ void MainWindow::on_pushButton_3_clicked() {
     tree->removeByID(id);
     ui->tableWidget->removeRow(row);
     updateTreeCtrl();
-    ui->label_9->setText("Record deleted");
     on_pushButton_2_clicked();
 }
 
@@ -189,9 +188,7 @@ void MainWindow::on_lineEdit_textChanged(const QString &arg1) {
     if (sum == 0) {
         ui->lineEdit->setStyleSheet("color: #b94a48; background-color: #f2dede;");
         ui->pushButton->setEnabled(false);
-        ui->label_9->setText("Invalid data");
     } else {
-        ui->label_9->setText("All fine");
         ui->lineEdit->setStyleSheet("");
         ui->pushButton->setEnabled(true);
     }
@@ -200,12 +197,10 @@ void MainWindow::on_lineEdit_textChanged(const QString &arg1) {
 //Поля вводе reciever
 void MainWindow::on_lineEdit_2_textChanged() {
     ui->lineEdit_2->setStyleSheet("");
-    ui->label_9->setText("All fine");
 }
 
 void MainWindow::on_lineEdit_3_textChanged() {
     ui->lineEdit_3->setStyleSheet("");
-    ui->label_9->setText("All fine");
 }
 
 
@@ -299,3 +294,61 @@ void MainWindow::on_pushButton_5_clicked()
         qDebug() << "Error";
     }
 }
+
+void MainWindow::on_pushButton_6_clicked()
+{
+    tree->Work = true;
+    // Создаём объект потока
+    QThread* workerThr = new QThread;
+    // Создаём объект производителя
+    worker* workerObj = new worker(tree, this->ui);
+
+    // Перемещаем ридера в новый поток
+    workerObj->moveToThread(workerThr);
+
+    connect(workerThr, SIGNAL(started()), workerObj, SLOT(startWork()));
+
+    connect(workerObj, SIGNAL(finished()), workerObj, SLOT(deleteLater()));
+
+    // удаляем объект треда по завершении потока
+    connect(workerThr, SIGNAL(finished()), workerThr, SLOT(deleteLater()));
+
+    connect(workerObj, SIGNAL(updateUI()), this, SLOT(updateTreeCtrl()));
+    // Запускаем поток
+    workerThr->start();
+}
+
+void MainWindow::on_pushButton_8_clicked()
+{
+    tree->Consume = true;
+    // Создаём объект потока
+    QThread* consumerThr = new QThread;
+    // Создаём объект производителя
+    consumer* consumerObj = new consumer(tree, this->ui);
+
+    // Перемещаем ридера в новый поток
+    consumerObj->moveToThread(consumerThr);
+
+    connect(consumerThr, SIGNAL(started()), consumerObj, SLOT(start()));
+
+    connect(consumerObj, SIGNAL(finished()), consumerObj, SLOT(deleteLater()));
+
+    connect(consumerThr, SIGNAL(finished()), consumerThr, SLOT(deleteLater()));
+
+    connect(consumerObj, SIGNAL(updateUI()), this, SLOT(updateTreeCtrl()));
+    // Запускаем поток
+    consumerThr->start();
+}
+
+void MainWindow::on_pushButton_7_clicked()
+{
+    tree->Work = false;
+}
+
+
+void MainWindow::on_pushButton_9_clicked()
+{
+    tree->Consume = false;
+}
+
+
